@@ -1,7 +1,12 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    id("com.google.devtools.ksp") //ksp plugin
+    id ("kotlin-parcelize")
+    id ("androidx.navigation.safeargs")
+    id("org.jetbrains.kotlin.kapt") //kapt plugin
 }
+
 
 android {
     namespace = "com.example.notesapp"
@@ -33,9 +38,19 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+
+    buildFeatures{
+        dataBinding = true
+        viewBinding = true
+    }
 }
 
 dependencies {
+
+    val nav_version = "2.7.7"
+    val room_version = "2.6.1"
+    val lifecycle_version = "2.8.4"
+    val arch_version = "2.2.0"
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
@@ -45,4 +60,31 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+
+    //navigation conmponent - Views/Fragments Integration
+    implementation ("androidx.navigation:navigation-fragment:$nav_version")
+    implementation ("androidx.navigation:navigation-ui:$nav_version")
+
+
+    //Material components library
+    implementation ("com.google.android.material:material:1.9.0")
+
+
+    //room dependencies
+    implementation ("androidx.room:room-runtime:$room_version")
+    kapt ("androidx.room:room-compiler:$room_version")
+
+
+    //Coroutines
+    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9")
+    implementation ("androidx.room:room-ktx:$room_version") //coroutine support for room
+
+
+    // ViewModel
+    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version")
+    // LiveData
+    implementation ("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version")
+    //Annotation Processor
+    kapt ("androidx.lifecycle:lifecycle-compiler:$lifecycle_version")
 }
